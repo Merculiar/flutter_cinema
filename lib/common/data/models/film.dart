@@ -13,6 +13,14 @@ class Film with ChangeNotifier {
     this.isFavorite = false,
   });
 
+    factory Film.fromJson(Map<String, dynamic> json) {
+    return Film(
+      id: json["Id"],
+      title: json["Title"], 
+      description: json["Description"]
+    );
+  }
+
   void toggleFavoriteStatus() {
     isFavorite = !isFavorite;
     notifyListeners();

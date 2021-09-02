@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/common/data/models/film.dart';
 import '/mvvm/vm/film_list_view_model.dart';
+import '/mvvm/ui/components/film_item.dart';
 
 typedef Null ItemSelectedCallback(int value);
 
 class FilmListWidget extends StatefulWidget {
   final ItemSelectedCallback onItemSelected;
   final bool showFavorites;
+  final bool showHighLight;
 
-  FilmListWidget(
-    this.onItemSelected,
-    this.showFavorites,
-  );
+  FilmListWidget(this.onItemSelected, this.showFavorites, this.showHighLight);
 
   @override
   _FilmListWidgetState createState() => _FilmListWidgetState();
@@ -27,46 +25,27 @@ class _FilmListWidgetState extends State<FilmListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final filmsData = Provider.of<FilmListViewModel>(context, listen: false);
-    final films =
-        widget.showFavorites ? filmsData.favoriteItems : filmsData.films;
+    final filmListViewModel =
+        Provider.of<FilmListViewModel>(context, listen: false);
+    final films = widget.showFavorites
+        ? filmListViewModel.favoriteItems
+        : filmListViewModel.films;
 
     return ListView.builder(
       itemCount: films.length,
       itemBuilder: (context, index) {
-        return ChangeNotifierProvider.value(
-          value: films[index],
-          child: Container(
-            color: _selectedIndex == index ? Colors.teal : Colors.white,
-            padding: const EdgeInsets.all(5.0),
-            child: InkWell(
-              onTap: () {
-                widget.onItemSelected(films[index].id);
-                _onSelected(index);
-              },
-              child: Card(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(16.5),
-                      child: Text(
-                        films[index].title,
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                    Consumer<Film>(
-                      builder: (ctx, film, _) => IconButton(
-                        icon: Icon(
-                            film.isFavorite ? Icons.star : Icons.star_border),
-                        onPressed: film.toggleFavoriteStatus,
-                        color: Theme.of(context).accentColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+        return Container(
+          color: (widget.showHighLight == true && _selectedIndex == index)
+              ? Colors.teal
+              : Colors.white,
+          padding: const EdgeInsets.all(5.0),
+          child: InkWell(
+            onTap: () {
+              widget.onItemSelected(films[index].id);
+              _onSelected(index);
+            },
+            child: ChangeNotifierProvider.value(
+                value: films[index], child: FilmItem()),
           ),
         );
       },

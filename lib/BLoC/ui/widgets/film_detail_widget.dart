@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cinema/mvvm/vm/film_list_view_model.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_cinema/common/data/dummy_data.dart';
 
-import '/mvvm/vm/film_list_view_model.dart';
-
-class DetailWidget extends StatelessWidget {
-  static const routeName = '/detail-widget-mvvm';
+class FilmDetailWidget extends StatelessWidget {
+  static const routeName = '/detail-widget-Bloc';
   final int id;
 
-  DetailWidget(
+  FilmDetailWidget(
     this.id,
   );
 
   @override
   Widget build(BuildContext context) {
-    final loadedFilm =
-        Provider.of<FilmListViewModel>(context, listen: false).findbyId(id);
-
+    var _film = dummyFilms[id - 1];
     return Container(
       color: Theme.of(context).accentColor,
       child: Center(
@@ -24,14 +19,14 @@ class DetailWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              loadedFilm.title,
+              _film.title,
               style: TextStyle(fontSize: 36.0, color: Colors.white),
             ),
             SizedBox(
               height: 15,
             ),
             Text(
-              loadedFilm.description,
+              _film.description,
               style: TextStyle(fontSize: 36.0, color: Colors.white),
             ),
           ],

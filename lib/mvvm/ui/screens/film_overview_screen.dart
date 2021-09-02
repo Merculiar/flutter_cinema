@@ -18,8 +18,43 @@ class FilmListScreen extends StatefulWidget {
 
 class _FilmListScreenState extends State<FilmListScreen> {
   var _selectedId = 1;
-  var _isLandscape = false;
   var _showOnlyFavorites = false;
+  var _isLandscape = false;
+  var _showHightLight = false;
+
+  Widget _buildPortait() {
+    _showHightLight = false;
+    print('portrait');
+    return Row(children: <Widget>[
+      Expanded(
+        child: FilmListWidget((id) {
+          _selectedId = id;
+          Navigator.pushNamed(context, DetailScreen.routeName,
+              arguments: _selectedId);
+          print(_selectedId);
+        }, _showOnlyFavorites, _showHightLight),
+      ),
+      Container(),
+    ]);
+  }
+
+  Widget _buildLandscape() {
+    _showHightLight = true;
+    print('landscape');
+    return Row(children: <Widget>[
+      Expanded(
+        child: FilmListWidget((id) {
+          setState(() {
+            _selectedId = id;
+          });
+        }, _showOnlyFavorites, _showHightLight),
+      ),
+      Expanded(
+        flex: 2,
+        child: DetailWidget(_selectedId),
+      )
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,27 +92,7 @@ class _FilmListScreenState extends State<FilmListScreen> {
         (MediaQuery.of(context).orientation == Orientation.landscape)
             ? _isLandscape = true
             : _isLandscape = false;
-        return Row(children: <Widget>[
-          Expanded(
-            child: FilmListWidget((id) {
-              if (_isLandscape) {
-                setState(() {
-                  _selectedId = id;
-                });
-              } else {
-                _selectedId = id;
-                Navigator.pushNamed(context, DetailScreen.routeName,
-                    arguments: _selectedId);
-              }
-            }, _showOnlyFavorites),
-          ),
-          _isLandscape
-              ? Expanded(
-                  flex: 2,
-                  child: DetailWidget(_selectedId),
-                )
-              : Container(),
-        ]);
+        return _isLandscape ? _buildLandscape() : _buildPortait();
       }),
     );
   }

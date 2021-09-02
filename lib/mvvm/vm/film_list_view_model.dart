@@ -5,8 +5,6 @@ import '/common/data/models/film.dart';
 
 class FilmListViewModel extends ChangeNotifier {
   var _films = FilmsRepository().items;
- // var _showFavoritesOnly = false;
-
   List<Film> get films {
     return [..._films];
   }
@@ -23,6 +21,22 @@ class FilmListViewModel extends ChangeNotifier {
     return _films.length;
   }
 
+  // Future<List<Film>?> _films = FilmsRepository().items;
+
+  // Future<List<Film>?> get films {
+  //   return _films;
+  // }
+
+  // Future<List<Film>> get favoriteItems async {
+  //   return _films.then(
+  //       (value) => value!.where((prodItem) => prodItem.isFavorite).toList());
+  // }
+
+  // Future<Film> findbyId(int id) async {
+  //   return _films
+  //       .then((value) => value!.firstWhere((film) => film.id == id));
+  // }
+
   // void showFavoritesOnly() {
   //   _showFavoritesOnly = true;
   //   notifyListeners();
@@ -33,8 +47,8 @@ class FilmListViewModel extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void toggleFavoriteStatus(int id) {
-    _films[id].isFavorite = !_films[id].isFavorite;
+  void toggleFavoriteStatus(Film film) {
+    film.isFavorite = film.isFavorite;
     notifyListeners();
   }
 }

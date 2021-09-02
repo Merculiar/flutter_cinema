@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../../BLoC/ui/screens/film_overview_screen.dart' as bloc;
 import '../../MVVM/ui/screens/film_overview_screen.dart' as mvvm;
 
+
+
 class EntryScreen extends StatelessWidget {
+  static const routeName = '/entry';
   void selectBLoC(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
-      mvvm.FilmListScreen.routeName,
+      bloc.FilmListScreen.routeName,
     );
   }
 
@@ -14,9 +18,6 @@ class EntryScreen extends StatelessWidget {
       mvvm.FilmListScreen.routeName,
     );
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {

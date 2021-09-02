@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '/common/data/models/film.dart';
 
 class FilmViewModel with ChangeNotifier {
+
   final Film film;
 
   FilmViewModel(this.film);
